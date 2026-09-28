@@ -1,0 +1,12 @@
+B t=0 body=25.69 mask=NaN err_std=1.929 max=7.2
+B t=1 body=38.58 mask=NaN err_std=6.155 max=21.8
+B t=2 body=39.03 mask=NaN err_std=7.995 max=28.0
+B t=4 body=39.52 mask=NaN err_std=11.270 max=49.9
+B t=8 body=40.01 mask=NaN err_std=16.115 max=66.4
+B t=16 body=40.49 mask=NaN err_std=21.468 max=74.2
+B t=32 body=40.98 mask=NaN err_std=31.157 max=128.5
+B t=64 body=41.48 mask=NaN err_std=42.535 max=146.9
+B t=128 body=41.98 mask=NaN err_std=59.978 max=204.1
+B t=256 body=42.49 mask=NaN err_std=87.517 max=308.3
+B t=512 body=42.99 mask=NaN err_std=119.866 max=403.5
+B t=1024 body=43.49 mask=NaN err_std=172.212 max=536.7

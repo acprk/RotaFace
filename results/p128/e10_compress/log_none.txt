@@ -1,0 +1,7 @@
+none t=0 drop=0 kept=64 bytes/tmpl=8192 noise=2^25.68 err_std=2.95
+none t=1 drop=0 kept=64 bytes/tmpl=8192 noise=2^35.34 err_std=2.84
+none t=4 drop=0 kept=64 bytes/tmpl=8192 noise=2^36.21 err_std=2.84
+none t=16 drop=0 kept=64 bytes/tmpl=8192 noise=2^37.19 err_std=3.58
+none t=64 drop=0 kept=64 bytes/tmpl=8192 noise=2^38.18 err_std=5.40
+none t=256 drop=0 kept=64 bytes/tmpl=8192 noise=2^39.18 err_std=8.79
+none t=1024 drop=0 kept=64 bytes/tmpl=8192 noise=2^40.19 err_std=17.17

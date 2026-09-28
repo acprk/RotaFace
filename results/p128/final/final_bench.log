@@ -1,0 +1,7 @@
+rotate_extprod_4x15_64b               187.16 us per ciphertext(4 templates)
+rotate_compact_4x9                     91.75 us per ciphertext(4 templates)
+rotate_compact_4x9_rerand             154.51 us per ciphertext(4 templates)
+owner_decrypt_reencrypt              1652.98 us per ciphertext(4 templates)
+server_match                           34.91 us per ciphertext(4 templates)
+client_query_ggsw                    5375.65 us per call
+owner_token_gen_seeded_plus_pk       9695.88 us per call

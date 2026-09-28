@@ -1,0 +1,7 @@
+adaptive:1.0 t=0 drop=22 kept=42 bytes/tmpl=5376 noise=2^25.98 err_std=2.59
+adaptive:1.0 t=1 drop=32 kept=32 bytes/tmpl=4096 noise=2^35.63 err_std=2.79
+adaptive:1.0 t=4 drop=33 kept=31 bytes/tmpl=3968 noise=2^36.79 err_std=3.14
+adaptive:1.0 t=16 drop=34 kept=30 bytes/tmpl=3840 noise=2^38.53 err_std=6.55
+adaptive:1.0 t=64 drop=35 kept=29 bytes/tmpl=3712 noise=2^40.51 err_std=25.09
+adaptive:1.0 t=256 drop=36 kept=28 bytes/tmpl=3584 noise=2^42.47 err_std=88.98
+adaptive:1.0 t=1024 drop=37 kept=27 bytes/tmpl=3456 noise=2^44.39 err_std=320.73

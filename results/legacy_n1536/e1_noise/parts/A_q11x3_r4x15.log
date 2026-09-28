@@ -1,0 +1,10 @@
+A t=0 body=25.68 mask=25.67 err_std=0.260 max=0.7
+A t=1 body=35.13 mask=39.21 err_std=723.342 max=2287.2
+A t=2 body=35.55 mask=39.62 err_std=994.673 max=2966.4
+A t=4 body=36.01 mask=40.09 err_std=1354.451 max=4343.3
+A t=8 body=36.49 mask=40.50 err_std=1763.847 max=6012.7
+A t=16 body=36.99 mask=40.93 err_std=2337.136 max=6500.0
+A t=32 body=37.48 mask=41.46 err_std=3709.757 max=10070.9
+A t=64 body=37.98 mask=41.99 err_std=4836.265 max=11616.1
+A t=128 body=38.47 mask=42.43 err_std=6450.379 max=17687.9
+A t=256 body=38.98 mask=42.96 err_std=8682.047 max=33453.1

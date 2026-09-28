@@ -1,0 +1,6 @@
+config,op,us_per_ct_median,us_min,us_max,rounds,batch,bytes_per_ct,slots
+B_r4x15,client_query_enc,5106.83,4885.68,5239.14,9,100,131072,4
+B_r4x15,owner_reencrypt,1579.79,1538.78,1658.70,9,100,32768,4
+B_r4x15,owner_token_gen,27611.18,27234.40,29233.56,9,100,983040,4
+B_r4x15,server_rotate,197.44,188.25,215.86,9,100,32768,4
+B_r4x15,server_score,36.12,34.96,41.55,9,100,32768,4

@@ -1,0 +1,7 @@
+config,op,us_per_ct_median,us_min,us_max,rounds,batch,bytes_per_ct,slots
+A_q4x8_r4x15,client_query_enc,901.69,877.30,922.69,9,100,32768,4
+A_q4x8_r4x15,owner_reencrypt,20153.39,19821.19,20531.10,9,100,524288,4
+A_q4x8_r4x15,owner_token_gen,63593.38,62519.24,64458.23,9,100,1966080,4
+A_q4x8_r4x15,server_rotate,3039.59,2970.80,3428.87,9,100,524288,4
+A_q4x8_r4x15,server_score,127.02,125.56,275.54,9,100,32768,4
+A_q4x8_r4x15,server_to_fourier,379.12,368.81,493.00,9,100,524288,4

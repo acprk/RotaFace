@@ -1,0 +1,5 @@
+code/target/
+data/*.f32
+results/**/*.f32
+.venv/
+__pycache__/

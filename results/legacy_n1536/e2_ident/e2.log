@@ -1,0 +1,5 @@
+B t=0 scored 8346x1535 in 30.2s
+B t=16 scored 8346x1535 in 31.0s
+B t=64 scored 8346x1535 in 32.1s
+B t=256 scored 8346x1535 in 29.4s
+B t=1024 scored 8346x1535 in 33.9s

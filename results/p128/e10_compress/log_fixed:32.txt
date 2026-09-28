@@ -1,0 +1,7 @@
+fixed:32 t=0 drop=32 kept=32 bytes/tmpl=4096 noise=2^35.20 err_std=2.68
+fixed:32 t=1 drop=32 kept=32 bytes/tmpl=4096 noise=2^35.90 err_std=2.81
+fixed:32 t=4 drop=32 kept=32 bytes/tmpl=4096 noise=2^36.72 err_std=3.23
+fixed:32 t=16 drop=32 kept=32 bytes/tmpl=4096 noise=2^37.68 err_std=4.32
+fixed:32 t=64 drop=32 kept=32 bytes/tmpl=4096 noise=2^38.52 err_std=6.80
+fixed:32 t=256 drop=32 kept=32 bytes/tmpl=4096 noise=2^39.54 err_std=11.74
+fixed:32 t=1024 drop=32 kept=32 bytes/tmpl=4096 noise=2^40.55 err_std=26.03

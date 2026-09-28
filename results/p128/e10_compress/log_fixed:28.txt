@@ -1,0 +1,7 @@
+fixed:28 t=0 drop=28 kept=36 bytes/tmpl=4608 noise=2^31.12 err_std=3.11
+fixed:28 t=1 drop=28 kept=36 bytes/tmpl=4608 noise=2^34.98 err_std=3.25
+fixed:28 t=4 drop=28 kept=36 bytes/tmpl=4608 noise=2^35.97 err_std=3.30
+fixed:28 t=16 drop=28 kept=36 bytes/tmpl=4608 noise=2^36.98 err_std=3.66
+fixed:28 t=64 drop=28 kept=36 bytes/tmpl=4608 noise=2^37.99 err_std=5.43
+fixed:28 t=256 drop=28 kept=36 bytes/tmpl=4608 noise=2^38.98 err_std=8.88
+fixed:28 t=1024 drop=28 kept=36 bytes/tmpl=4608 noise=2^39.98 err_std=16.02

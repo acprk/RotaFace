@@ -1,0 +1,25 @@
+building DB n=20000 ...
+A threads=  1 rep=0   88.485s       226.0 tmpl/s
+A threads=  2 rep=0   44.803s       446.4 tmpl/s
+A threads=  4 rep=0   24.688s       810.1 tmpl/s
+A threads=  8 rep=0   14.013s      1427.3 tmpl/s
+A threads= 16 rep=0    8.973s      2229.0 tmpl/s
+A threads= 24 rep=0    7.006s      2854.5 tmpl/s
+A threads= 32 rep=0    6.185s      3233.7 tmpl/s
+A threads= 48 rep=0    5.304s      3770.9 tmpl/s
+A threads=  1 rep=1   89.743s       222.9 tmpl/s
+A threads=  2 rep=1   46.680s       428.5 tmpl/s
+A threads=  4 rep=1   25.701s       778.2 tmpl/s
+A threads=  8 rep=1   14.272s      1401.3 tmpl/s
+A threads= 16 rep=1    9.176s      2179.6 tmpl/s
+A threads= 24 rep=1    7.410s      2699.0 tmpl/s
+A threads= 32 rep=1    6.433s      3109.0 tmpl/s
+A threads= 48 rep=1    5.893s      3394.1 tmpl/s
+A threads=  1 rep=2   96.998s       206.2 tmpl/s
+A threads=  2 rep=2   45.923s       435.5 tmpl/s
+A threads=  4 rep=2   25.096s       796.9 tmpl/s
+A threads=  8 rep=2   13.935s      1435.3 tmpl/s
+A threads= 16 rep=2   10.626s      1882.2 tmpl/s
+A threads= 24 rep=2    8.407s      2378.8 tmpl/s
+A threads= 32 rep=2    7.202s      2776.9 tmpl/s
+A threads= 48 rep=2    6.050s      3305.8 tmpl/s

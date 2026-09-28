@@ -1,0 +1,53 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{newtxtext,newtxmath}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds,calc,shapes.geometric}
+% palette (dataviz reference, validated): blue #2a78d6, orange #eb6834, aqua #1baf7a
+\definecolor{sblue}{HTML}{2A78D6}\definecolor{sorange}{HTML}{EB6834}\definecolor{saqua}{HTML}{1BAF7A}
+\definecolor{ink}{HTML}{0B0B0B}\definecolor{ink2}{HTML}{52514E}\definecolor{muted}{HTML}{8A8984}
+\definecolor{surf}{HTML}{F4F3F0}\definecolor{bluebg}{HTML}{EAF2FC}\definecolor{orangebg}{HTML}{FDEEE7}
+\begin{document}
+\begin{tikzpicture}[
+  font=\footnotesize, text=ink, >={Stealth[length=2.2mm]},
+  actor/.style={draw=muted, line width=0.6pt, rounded corners=3pt, fill=white, minimum height=9mm, align=center, inner sep=3pt},
+  shard/.style={draw=none, rounded corners=1.5pt, minimum width=5.6mm, minimum height=4.2mm, inner sep=0},
+  lbl/.style={font=\scriptsize, text=ink2, align=center},
+  flow/.style={->, line width=0.8pt},
+]
+% ---------------- cloud
+\node[draw=muted, line width=0.6pt, rounded corners=5pt, fill=surf, minimum width=86mm, minimum height=38mm] (cloud) at (0,0) {};
+\node[anchor=north west, font=\small\bfseries] at ($(cloud.north west)+(2mm,-1.2mm)$) {Semi-honest cloud (stateless re-keying workers)};
+% shard grid: epoch e (rotated = blue) and e-1 (pending = orange)
+\foreach \r in {0,1,2} {
+  \foreach \c in {0,...,7} {
+    \pgfmathtruncatemacro{\idx}{\r*8+\c}
+    \ifnum\idx<15
+      \node[shard, fill=bluebg, draw=sblue, line width=0.7pt] (s\r\c) at ({-36mm+\c*6.6mm}, {3mm-\r*5.4mm}) {};
+    \else
+      \node[shard, fill=orangebg, draw=sorange, line width=0.7pt] (s\r\c) at ({-36mm+\c*6.6mm}, {3mm-\r*5.4mm}) {};
+    \fi
+  }
+}
+\node[lbl, anchor=north west] at ($(s20.south west)+(0,-1mm)$) {template shards (4 templates per ciphertext)};
+\node[fill=bluebg, draw=sblue, line width=0.7pt, minimum size=2.4mm, inner sep=0] (lg1) at (18mm, 9mm) {};
+\node[lbl, anchor=west] at ($(lg1.east)+(0.8mm,0)$) {under $s_{e}$ (rotated)};
+\node[fill=orangebg, draw=sorange, line width=0.7pt, minimum size=2.4mm, inner sep=0] (lg2) at (18mm, 4.5mm) {};
+\node[lbl, anchor=west] at ($(lg2.east)+(0.8mm,0)$) {under $s_{e-1}$ (queued)};
+% workers
+\node[actor, minimum width=26mm, anchor=west, fill=bluebg, draw=sblue] (work) at (14.5mm,-7mm) {\textcircled{\tiny 2} parallel rotation\\[-1pt]{\scriptsize $c' = \mathsf{KSG}_{s_{e-1}\to s_e}\boxdot c$}};
+\draw[flow, draw=sblue] (s17.east) to[out=0, in=90] (work.north);
+% matching
+\node[lbl, anchor=west] (match) at (14.5mm,-14.8mm) {matching: $\mathrm{GGSW}_{s_e}(\tilde q)\boxdot c$};
+% ---------------- key owner
+\node[actor, minimum width=26mm, anchor=south] (owner) at (-30mm, 33mm) {\textbf{Key owner}\\[-1pt]{\scriptsize keeps only $s_e$}};
+\node[actor, minimum width=26mm, anchor=south] (clients) at (30mm, 33mm) {\textbf{Clients}\\[-1pt]{\scriptsize fresh query under $s_e$}};
+% token
+\draw[flow, draw=sblue] (owner.south) -- node[lbl, anchor=east, pos=0.5, xshift=-1mm] {\textcircled{\tiny 1} token $\mathsf{tk}_e$\\[-2pt]\scriptsize one per epoch,\\[-2pt]\scriptsize independent of DB size} ($(cloud.north)+(-30mm,0)$);
+\draw[flow, draw=ink2] (clients.south) -- node[lbl, anchor=west, pos=0.5, xshift=1mm] {\textcircled{\tiny 3} query\\[-2pt]$\mathrm{GGSW}_{s_e}(\tilde q)$} ($(cloud.north)+(30mm,0)$);
+% compromise marker
+\node[lbl, anchor=center, text=ink2] at (0, 37.5mm) {\scriptsize a leaked $s_{e-1}$ is useless\\[-2pt]\scriptsize once its shards are rotated};
+% noise budget strip
+\node[anchor=north west, lbl] (nb) at ($(cloud.south west)+(0,-2mm)$) {noise budget};
+\shade[left color=bluebg, right color=sblue, rounded corners=1pt] ($(nb.east)+(1mm,-1.2mm)$) rectangle ($(nb.east)+(52mm,1.2mm)$);
+\node[lbl, anchor=west] at ($(nb.east)+(53mm,0)$) {$\sigma_T^2(t)=\sigma_0^2+t\,\sigma_{\mathsf{KS}}^2$};
+\end{tikzpicture}
+\end{document}

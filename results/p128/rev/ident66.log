@@ -1,0 +1,3 @@
+params k=1 N=2048 slots=4 gallery=1535 ciphertexts=384 probes=8346
+B t=0 scored 8346x1535 in 8.2s
+B t=1024 scored 8346x1535 in 8.8s

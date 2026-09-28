@@ -1,0 +1,24 @@
+params k=1 N=2048 slots=4 gallery=1535 ciphertexts=384 probes=8346
+B t=0 scored 8346x1535 in 17.2s
+B t=16 scored 8346x1535 in 15.8s
+B t=64 scored 8346x1535 in 17.6s
+B t=256 scored 8346x1535 in 16.0s
+B t=1024 scored 8346x1535 in 17.6s
+params k=1 N=2048 slots=4 gallery=1535 ciphertexts=384 probes=8346
+B t=0 scored 8346x1535 in 17.6s
+B t=16 scored 8346x1535 in 17.0s
+B t=64 scored 8346x1535 in 16.0s
+B t=256 scored 8346x1535 in 15.8s
+B t=1024 scored 8346x1535 in 15.1s
+params k=1 N=2048 slots=4 gallery=1535 ciphertexts=384 probes=8346
+B t=0 scored 8346x1535 in 15.7s
+B t=16 scored 8346x1535 in 14.4s
+B t=64 scored 8346x1535 in 15.2s
+B t=256 scored 8346x1535 in 16.0s
+B t=1024 scored 8346x1535 in 19.4s
+params k=1 N=2048 slots=4 gallery=1535 ciphertexts=384 probes=8346
+A t=0 scored 8346x1535 in 41.2s
+A t=16 scored 8346x1535 in 40.5s
+A t=64 scored 8346x1535 in 39.2s
+A t=256 scored 8346x1535 in 36.2s
+ALLDONE
