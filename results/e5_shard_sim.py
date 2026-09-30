@@ -1,7 +1,7 @@
 """E5: shard scheduling for DB-wide rotation across M worker nodes.
-Cluster-size distribution comes from spherical K-means (routed 1:N index) on LFW embeddings,
+Cluster-size distribution comes from spherical K-means on LFW embeddings,
 scaled to a target DB size. Per-ciphertext rotation cost c_rot (us, single core) comes from E3.
-usage: python e5_shard_sim.py <c_rot_us_per_ct> <slots> <out.csv>
+usage: python e5_shard_sim.py <c_rot_us_per_ct> <slots> <out.csv> [chunk_ciphertexts=4096]
 """
 import sys, csv, heapq, os
 import numpy as np
@@ -9,6 +9,7 @@ from sklearn.cluster import KMeans
 
 ROOT = os.path.dirname(os.path.abspath(__file__)) + '/..'
 c_rot = float(sys.argv[1]); slots = int(sys.argv[2]); out = sys.argv[3]
+L = int(sys.argv[4]) if len(sys.argv) > 4 else 4096
 emb = np.fromfile(f'{ROOT}/data/lfw_emb.f32', dtype=np.float32).reshape(-1, 512)
 emb = emb[np.linalg.norm(emb, axis=1) > 0.5]
 rows = []
@@ -32,10 +33,10 @@ for K in (100, 1000):
             for w in sorted(work, reverse=True):
                 l, j = heapq.heappop(h); heapq.heappush(h, (l + w, j))
             lpt = max(l for l, _ in h) / cores
-            # (3) split shards into chunks of <= 4096 ciphertexts, then LPT
+            # (3) split shards into chunks of <= L ciphertexts, then LPT
             chunks = []
             for c in cts:
-                q, r = divmod(c, 4096); chunks += [4096] * q + ([r] if r else [])
+                q, r = divmod(c, L); chunks += [L] * q + ([r] if r else [])
             h = [(0.0, j) for j in range(M)]
             for c in sorted(chunks, reverse=True):
                 l, j = heapq.heappop(h); heapq.heappush(h, (l + c * c_rot / 1e6, j))

@@ -65,6 +65,23 @@ ax[1].set_xlim(right=2**14.8)
 ax[1].text(0.02, 0.97, 'markers: measured; lines: model', transform=ax[1].transAxes, fontsize=6, color=INK2, va='top')
 save(fig, 'fig_noise.pdf')
 
+# ---------------------------------------------------------------- F-noise, single column (score error only)
+fig, ax = plt.subplots(figsize=(3.4, 1.85))
+for i, g in enumerate(gads):
+    pts = sorted([r for r in fit if r['gadget'] == g and int(r['t']) > 0], key=lambda r: int(r['t']))
+    t = np.array([int(r['t']) for r in pts]); lab = f'({g.replace("x", ", ")})'
+    ax.plot(t, [float(r['score_pred']) / 250000 for r in pts], '-', color=RAMP[i], lw=1.0, zorder=2)
+    ax.plot(t, [float(r['score_meas']) / 250000 for r in pts], MK[i], color=RAMP[i], mfc='white', mew=0.9, ms=3.2, zorder=3)
+    ax.text(t[-1] * 1.35, float(pts[-1]['score_meas']) / 250000, lab, color=INK2, fontsize=6, va='center')
+ax.set_xscale('log', base=2); ax.set_xlabel('number of rotations $t$')
+ax.set_xticks([2**k for k in range(0, 13, 2)])
+ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f'$2^{{{int(np.log2(v))}}}$'))
+ax.set_yscale('log'); ax.set_ylabel('score error std (cosine)')
+ref_line(ax, 1e-3 / 6, r'$1.7{\times}10^{-4}$', 1.05)
+ax.set_xlim(right=2**14.8)
+ax.text(0.02, 0.97, 'markers: measured; lines: model', transform=ax.transAxes, fontsize=6, color=INK2, va='top')
+save(fig, 'fig_noise_col.pdf')
+
 # ---------------------------------------------------------------- F-budget (compact pipeline, Corollary 1)
 bb = R('p128/final/budget_bench.csv')
 Delta, lam, sig0, sigf = 2.0**45, 500.0, 3.2 * 2**24, 1.1e-5
@@ -84,7 +101,7 @@ ax.set_xlabel(r'rotation cost ($\mu$s per template, one core, re-randomised)'); 
 save(fig, 'fig_budget.pdf')
 
 # ---------------------------------------------------------------- F-scaling (final pipeline, idle host)
-sc = R('p128/final/scale_final.csv')
+sc = R('p128/rev2/scale_merged.csv')
 fig, ax = plt.subplots(figsize=(3.5, 2.15))
 d = collections.defaultdict(list)
 for r in sc: d[int(r['threads'])].append(float(r['seconds']))
@@ -103,11 +120,11 @@ ax.legend(loc='upper left', fontsize=6)
 save(fig, 'fig_scaling.pdf')
 
 # ---------------------------------------------------------------- F-shards
-sh = R('p128/e5_shard/shard.csv')
+sh = R('p128/rev2/shard/shard.csv')
 fig, ax = plt.subplots(figsize=(3.5, 2.0))
 sel = [r for r in sh if r['K'] == '100' and r['N'] == '1000000']
 nodes = [int(r['nodes']) for r in sel]
-for i, (k, name, col) in enumerate([('rr_over_ideal', 'round-robin', S2), ('lpt_over_ideal', 'LPT on whole shards', S3), ('split_over_ideal', 'chunk-split + LPT', S1)]):
+for i, (k, name, col) in enumerate([('rr_over_ideal', 'round-robin', S2), ('lpt_over_ideal', 'LPT on whole shards', S3), ('split_over_ideal', r'chunk-split ($L{=}1024$) + LPT', S1)]):
     ys = [float(r[k]) for r in sel]
     ax.plot(nodes, ys, '-' + MK[i], color=col, mfc='white', mew=0.9, label=name)
     ax.text(nodes[-1] * 1.12, ys[-1], f'{ys[-1]:.2f}$\\times$', color=INK2, fontsize=6, va='center')
@@ -233,16 +250,16 @@ ax.legend(loc='upper left', fontsize=5.8); ax.set_title('(a) token choice', font
 ax = axs[1]
 ax.fill_between(th, lo, hi, color=S1, alpha=0.15, lw=0)
 ax.plot(th, tput, '-o', color=S1, mfc='white', mew=0.9, ms=3.4)
-ax.plot(th, tput[0] * th, color=MUTED, lw=0.7, zorder=1); ax.text(12.5, tput[0] * 14.5, 'linear', color=INK2, fontsize=5.8, rotation=66)
+ax.plot(th, tput[0] * th, color=MUTED, lw=0.7, zorder=1); ax.text(21, tput[0] * 21, 'linear ', color=INK2, fontsize=5.8, ha='right', va='bottom')
 ax.axvline(26, color=MUTED, lw=0.5, zorder=0); ax.text(27, 25, '1 socket', color=INK2, fontsize=5.8)
 for t_, v_, m_ in zip(th, tput, med):
-    if t_ in (1, 16, 48): ax.annotate(f'{m_:.2f} s' if t_ == 48 else f'{m_:.1f} s', (t_, v_), xytext=(4, -10) if t_ == 1 else (-6, 5), textcoords='offset points', fontsize=5.6, color=INK2)
-ax.set_xlim(0, 50); ax.set_ylim(0, 420); ax.set_xlabel('threads'); ax.set_ylabel(r'templates / s ($10^3$)')
+    if t_ in (1, 16, 52): ax.annotate(f'{m_:.2f} s' if t_ == 52 else f'{m_:.1f} s', (t_, v_), xytext=(4, -10) if t_ == 1 else (-14, 6), textcoords='offset points', fontsize=5.6, color=INK2)
+ax.set_xlim(0, 55); ax.set_ylim(0, 640); ax.set_xlabel('threads'); ax.set_ylabel(r'templates / s ($10^3$)')
 ax.set_title(r'(b) one server, $10^6$ templates', fontsize=7)
 ax = axs[2]
 sel = [r for r in sh if r['K'] == '100' and r['N'] == '1000000']
 nodes = [int(r['nodes']) for r in sel]
-for i, (k, name, col) in enumerate([('rr_over_ideal', 'round-robin', S2), ('lpt_over_ideal', 'LPT, whole shards', S3), ('split_over_ideal', 'chunk-split + LPT', S1)]):
+for i, (k, name, col) in enumerate([('rr_over_ideal', 'round-robin', S2), ('lpt_over_ideal', 'LPT, whole shards', S3), ('split_over_ideal', r'chunk-split ($L{=}1024$) + LPT', S1)]):
     ys = [float(r[k]) for r in sel]
     ax.plot(nodes, ys, '-' + MK[i], color=col, mfc='white', mew=0.9, ms=3.4, label=name)
 ax.axhline(1, color=MUTED, lw=0.7, zorder=1)

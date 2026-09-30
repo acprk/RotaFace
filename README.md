@@ -35,10 +35,12 @@ Single-core timings are sensitive to host load; run them on an idle machine.
 | noise model vs. measurement | `$B/chain_compact <logB> <l> <T> 16 16 out.csv`; `python results/noise_model_compact.py` | `results/p128/rev/chain_*.csv` |
 | predicted vs. measured decision flips | `results/p128/flip_prediction.csv` | same |
 | ablation of the rotation pipeline | `$B/final_bench 9 100 out.csv` (time), `$B/compact 1024 16 16 out.csv` (sizes, error) | `results/p128/final/final_bench.csv`, `results/p128/e11_compact/compact.csv` |
-| per-operation costs | `$B/final_bench 9 100 out.csv` | `results/p128/final/final_bench.csv` |
+| per-operation costs, incl. standard seeded key switch + re-randomisation | `taskset -c 4 $B/final_bench 9 100 out.csv` | `results/p128/rev2/final_bench.csv` (earlier session: `results/p128/final/`) |
+| key leakage to holders of the next epoch key | `$B/leak 200 out.csv` | `results/p128/rev2/leak.csv` |
 | token choice vs. rotation budget | `$B/budget_bench out.csv` | `results/p128/final/budget_bench.csv` |
-| multi-core scaling | `RF_COMPACT=1 $B/scale B 16 2 4 9 250000 1,2,4,8,16,24,32,48 3 out.csv` | `results/p128/final/scale_final.csv` |
-| multi-node shard scheduling (simulation) | `python results/e5_shard_sim.py 150.96 4 out.csv` | `results/p128/e5_shard/shard.csv` |
+| multi-core scaling (pinned; NUMA first-touch `RF_FIRST_TOUCH=1`; permuted output `RF_PERM=1`) | `results/p128/rev2/run_scale.sh` | `results/p128/rev2/scale.csv` |
+| multi-node shard scheduling (simulation) | `python results/e5_shard_sim.py 151.41 4 out.csv 1024` | `results/p128/rev2/shard/shard.csv` |
+| multi-node makespan with I/O and chunk-size sweep | `python results/e5_shard_io.py 151.41 0.70 17408 10 out.csv` | `results/p128/rev2/shard/shard_io.csv` |
 | GLWE vs. GGSW storage layout | `RF_CFG=B_r4x15 $B/cost 9 100 out.csv`, `RF_CFG=A_q4x8_r4x15 ...` | `results/p128/final/layout/` |
 | in-place upgrade | `$B/upgrade B 16 2 4 15 64 16 16 out.csv` (and `A 4 8 4 15 16 8 8`) | `results/e6_upgrade/upgrade.csv` |
 | plots | `python results/make_figs.py` | `figures/*.pdf` |

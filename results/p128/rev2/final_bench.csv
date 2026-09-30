@@ -1,0 +1,16 @@
+op,us_median,us_min,us_max,per,rounds,batch
+rotate_extprod_4x15_64b,185.12,180.75,190.63,ciphertext(4 templates),9,100
+rotate_compact_4x9,87.65,86.08,88.93,ciphertext(4 templates),9,100
+rotate_compact_4x9_rerand,151.41,147.97,162.37,ciphertext(4 templates),9,100
+owner_decrypt_reencrypt,1595.09,1565.81,1615.99,ciphertext(4 templates),9,100
+server_match,34.67,33.87,35.25,ciphertext(4 templates),9,100
+client_query_ggsw,5085.53,5032.50,5184.09,call,9,100
+owner_token_gen_seeded_plus_pk,9231.02,8997.44,9296.28,call,9,100
+rotate_native_4x15_64b,136.15,132.80,138.38,ciphertext(4 templates),9,100
+owner_decrypt_reencrypt_fft,42.03,41.39,43.36,ciphertext(4 templates),9,100
+rotate_native_4x9_64b,85.92,84.70,87.95,ciphertext(4 templates),9,100
+rotate_native_4x15_64b_rerand,199.29,195.98,205.29,ciphertext(4 templates),9,100
+token_bytes_seeded,147472,,,bytes,,
+pk_bytes,32768,,,bytes,,
+query_ggsw_bytes,131072,,,bytes,,
+template_bytes_compact,4352.0,,,bytes per template,,

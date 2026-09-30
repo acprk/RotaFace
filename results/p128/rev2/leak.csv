@@ -1,0 +1,15 @@
+quantity,log2_std_or_value
+fresh_sigma,25.6781
+token_noise_E,25.6694
+e_C_stored_epoch_i,31.3644
+sum_dE,34.9658
+e_rr_rerand,30.8094
+e_rd_rounding,31.3705
+hint_noise_rr_plus_rd,31.6551
+effective_error_hinted_sample,30.9945
+lambda,0.4007
+corr_eC_hintnoise,0.0009
+corr_hintnoise_across_ciphertexts,0.0619
+excess_kurtosis_e_rr,0.0031
+excess_kurtosis_hintnoise,-0.0298
+samples,409600.0000

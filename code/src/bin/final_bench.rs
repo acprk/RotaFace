@@ -1,4 +1,5 @@
-//! Final single-source benchmark (p128, layout B): all per-ciphertext costs measured in ONE interleaved run.
+//! Single-session benchmark (p128, layout B): all per-ciphertext costs measured in ONE interleaved run,
+//! including the standard seeded key switch (2^4,15) followed by the same re-randomisation.
 //! usage: RF_PARAMS=p128 final_bench <rounds> <batch> <out.csv>
 use rotaface::*;
 use std::io::Write;
@@ -24,7 +25,7 @@ fn main() {
     let full: Vec<Glwe> = xs.iter().map(|x| enc_template_b(&p, &s, x, &mut rng)).collect();
     let comp: Vec<Glwe> = full.iter().map(|c| { let mut c = c.clone(); truncate_split(&p, &mut c, 36, 32); c }).collect();
     let qb = ctx.to_fourier(&enc_query_b(&p, &s, &q, &mut rng));
-    let ops = ["rotate_extprod_4x15_64b", "rotate_compact_4x9", "rotate_compact_4x9_rerand", "owner_decrypt_reencrypt", "server_match", "client_query_ggsw", "owner_token_gen_seeded_plus_pk", "rotate_native_4x15_64b", "owner_decrypt_reencrypt_fft", "rotate_native_4x9_64b"];
+    let ops = ["rotate_extprod_4x15_64b", "rotate_compact_4x9", "rotate_compact_4x9_rerand", "owner_decrypt_reencrypt", "server_match", "client_query_ggsw", "owner_token_gen_seeded_plus_pk", "rotate_native_4x15_64b", "owner_decrypt_reencrypt_fft", "rotate_native_4x9_64b", "rotate_native_4x15_64b_rerand"];
     let mut t: Vec<Vec<f64>> = vec![vec![]; ops.len()];
     for _ in 0..rounds {
         let t0 = Instant::now(); for c in &full { let _ = rotate_glwe(&mut ctx, &ext, c); } t[0].push(t0.elapsed().as_secs_f64() * 1e6 / batch as f64);
@@ -36,6 +37,7 @@ fn main() {
         let t0 = Instant::now(); for c in &full { let _ = native_ks(&p, &mut ctx, &nat15, c); } t[7].push(t0.elapsed().as_secs_f64() * 1e6 / batch as f64);
         let t0 = Instant::now(); for c in &full { let _ = owner_reencrypt_fft(&p, &mut ctx, &fk1, &fk2, c); } t[8].push(t0.elapsed().as_secs_f64() * 1e6 / batch as f64);
         let t0 = Instant::now(); for c in &full { let _ = native_ks(&pc, &mut ctx, &nat, c); } t[9].push(t0.elapsed().as_secs_f64() * 1e6 / batch as f64);
+        let t0 = Instant::now(); for c in &full { let mut o = native_ks(&p, &mut ctx, &nat15, c); rerandomise(&p, &mut ctx, &pk, &mut o); } t[10].push(t0.elapsed().as_secs_f64() * 1e6 / batch as f64);
         let t0 = Instant::now(); let _k = ksk_gen_seeded(&pc, &s, &s2, 4, 9); let _p = glwe_encrypt(&p, &s2, &vec![0u64; p.n], &mut rng); t[6].push(t0.elapsed().as_secs_f64() * 1e6);
     }
     let mut f = std::fs::File::create(&a[3]).unwrap();
