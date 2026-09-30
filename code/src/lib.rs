@@ -313,7 +313,7 @@ pub fn coef0_score<C: Container<Element = u64>>(p: &Params, sk_polys: &[Vec<u64>
 pub fn key_polys(p: &Params, sk: &Sk) -> Vec<Vec<u64>> { (0..p.k).map(|i| key_poly(sk, i)).collect() }
 
 impl Params {
-    /// 128-bit parameter set used in the paper: n = k*N = 2048 (lattice-estimator rough: 2^140.7).
+    /// Main 128-bit parameter set: n = k*N = 2048 (lattice-estimator rough: 2^140.7).
     pub fn p128() -> Self {
         Params { k: 1, n: 2048, q_base_log: 16, q_level: 2, r_base_log: 4, r_level: 15,
                  std_rel: 3.2 / (1u64 << 40) as f64, delta_log: 45, scale: 500.0 }

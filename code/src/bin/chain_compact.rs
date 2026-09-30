@@ -1,4 +1,4 @@
-//! Theorem 1 validation on Algorithm 1 itself (native seeded KS + re-randomisation + (36,32) rounding).
+//! Noise-model validation on the full rotation (native seeded KS + re-randomisation + (36,32) rounding).
 //! usage: RF_PARAMS=p128 chain_compact <bl> <lv> <T> <M> <Q> <out.csv>
 use rotaface::*;
 use std::io::Write;

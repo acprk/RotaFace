@@ -1,4 +1,4 @@
-"""Theorem 1 (full form) vs Algorithm 1 measurements (results/p128/rev/chain_compact.csv)."""
+"""Noise model (full form) vs measurements of the complete rotation (results/p128/rev/chain_compact.csv)."""
 import csv, math
 k, N, sigma = 1, 2048, 3.2 * 2**24
 Delta, lam, qnorm = 2.0**45, 500.0, 500.0

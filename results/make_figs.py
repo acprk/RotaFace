@@ -1,4 +1,4 @@
-"""Paper figures (IEEE column 3.5in / text 7.16in) from measured CSVs -> ../paper/figures/*.pdf
+"""Figures (IEEE column 3.5in / text 7.16in) from measured CSVs -> ../figures/*.pdf
 Palette: dataviz reference instance, validated (categorical slots 1-3 all-pairs PASS; ordinal blue ramp PASS).
 Every series carries color + marker shape + direct label (aqua is < 3:1 on white -> labels mandatory)."""
 import csv, os, collections, re
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import LogLocator, NullFormatter, FuncFormatter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, '..', 'paper', 'figures'); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(HERE, '..', 'figures'); os.makedirs(OUT, exist_ok=True)
 plt.style.use(os.path.join(HERE, 'ieee.mplstyle'))
 
 S1, S2, S3 = '#2a78d6', '#eb6834', '#1baf7a'            # categorical slots 1-3
@@ -38,7 +38,7 @@ def save(fig, name):
     fig.savefig(os.path.join(OUT, name)); plt.close(fig)
 
 
-# ---------------------------------------------------------------- F-noise (Algorithm 1 chains vs full Theorem 1)
+# ---------------------------------------------------------------- F-noise (rotation chains vs noise model)
 fit = R('p128/rev/chain_fit.csv')
 gads = ['2x18', '3x12', '4x9', '6x6', '9x4']
 fig, ax = plt.subplots(1, 2, figsize=(7.16, 1.8), gridspec_kw={'wspace': 0.32})
