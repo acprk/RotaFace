@@ -1,6 +1,6 @@
 # RotaFace
 
-Artifact for **"RotaFace: Scalable Key Rotation for FHE-Encrypted Biometric Databases"** (IEEE ISPA 2026).
+Artifact for **"RotaFace: Scalable Key Rotation for FHE-Encrypted Biometric Databases"** 
 
 RotaFace lets a cloud server re-key a TFHE-encrypted 1:N face gallery in place, from a small per-epoch token, without
 decrypting it. The repository contains the Rust implementation (on the `core_crypto` layer of TFHE-rs 0.6.4), every
