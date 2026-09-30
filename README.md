@@ -1,6 +1,6 @@
 # RotaFace
 
-Artifact for **"RotaFace: Scalable Key Rotation for FHE-Encrypted Biometric Databases in the Cloud"** (IEEE ISPA 2026).
+Artifact for **"RotaFace: Scalable Key Rotation for FHE-Encrypted Biometric Databases"** (IEEE ISPA 2026).
 
 RotaFace lets a cloud server re-key a TFHE-encrypted 1:N face gallery in place, from a small per-epoch token, without
 decrypting it. The repository contains the Rust implementation (on the `core_crypto` layer of TFHE-rs 0.6.4), every
@@ -30,18 +30,17 @@ Single-core timings are sensitive to host load; run them on an idle machine.
 
 | paper item | command (from repo root, `B=code/target/release`, `export RF_PARAMS=p128`) | output |
 |---|---|---|
-| Table I (security) | `sage results/e0_security/est.sage`, `est_full.sage` (set `LATTICE_ESTIMATOR`) | `results/e0_security/*.log` |
+| Table III (parameters, security) | `sage results/e0_security/est.sage`, `est_full.sage` (set `LATTICE_ESTIMATOR`) | `results/e0_security/*.log` |
 | Table II (1:N accuracy) | `RF_RERAND=1 RF_COMPACT=1 $B/ident B 16 2 4 9 0,1024 24 <prefix>` then `python results/analyze_e2.py <dir> <out.csv>` | `results/p128/e2_*metrics.csv` |
-| Fig. 2 / Theorem 1 | `$B/chain_compact <logB> <l> <T> 16 16 out.csv`; `python results/noise_model_compact.py` | `results/p128/rev/chain_*.csv` |
-| Fig. 5 (flips) | predictions from `results/p128/flip_prediction.csv` | same |
-| Fig. 4 (why decisions survive) | `make_figs.py` from the `ident` score matrices | `paper/figures/fig_margin.pdf` |
-| Table III (ablation) | `$B/final_bench 9 100 out.csv` (time), `$B/compact 1024 16 16 out.csv` (sizes, error) | `results/p128/final/final_bench.csv`, `results/p128/e11_compact/compact.csv` |
-| Table IV (costs) | `$B/final_bench 9 100 out.csv` | `results/p128/final/final_bench.csv` |
+| Fig. 2 (noise model) | `$B/chain_compact <logB> <l> <T> 16 16 out.csv`; `python results/noise_model_compact.py` | `results/p128/rev/chain_*.csv` |
+| Fig. 4 (decision flips) | predictions from `results/p128/flip_prediction.csv` | same |
+| Table IV (ablation) | `$B/final_bench 9 100 out.csv` (time), `$B/compact 1024 16 16 out.csv` (sizes, error) | `results/p128/final/final_bench.csv`, `results/p128/e11_compact/compact.csv` |
+| Table V (costs) | `$B/final_bench 9 100 out.csv` | `results/p128/final/final_bench.csv` |
 | Fig. 3(a) token choice | `$B/budget_bench out.csv` | `results/p128/final/budget_bench.csv` |
 | Fig. 3(b) scaling | `RF_COMPACT=1 $B/scale B 16 2 4 9 250000 1,2,4,8,16,24,32,48 3 out.csv` | `results/p128/final/scale_final.csv` |
 | Fig. 3(c) shards | `python results/e5_shard_sim.py 150.96 4 out.csv` | `results/p128/e5_shard/shard.csv` |
-| RQ4 layout A vs B | `RF_CFG=B_r4x15 $B/cost 9 100 out.csv`, `RF_CFG=A_q4x8_r4x15 ...` | `results/p128/final/layout/` |
-| Sec. VI-G upgrade | `$B/upgrade B 16 2 4 15 64 16 16 out.csv` (and `A 4 8 4 15 16 8 8`) | `results/e6_upgrade/upgrade.csv` |
+| Layout comparison (Sec. VI-D) | `RF_CFG=B_r4x15 $B/cost 9 100 out.csv`, `RF_CFG=A_q4x8_r4x15 ...` | `results/p128/final/layout/` |
+| Sec. VI-F upgrade | `$B/upgrade B 16 2 4 15 64 16 16 out.csv` (and `A 4 8 4 15 16 8 8`) | `results/e6_upgrade/upgrade.csv` |
 | all figures | `python results/make_figs.py` | `paper/figures/*.pdf` |
 
 Other drivers: `correct` (sanity check), `noise` (external-product noise sweep, `results/p128/e1_noise`), `rerand`

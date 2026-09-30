@@ -62,7 +62,7 @@ ax[0].legend(title=r'token gadget $(\log_2 B_r, \ell_r)$', title_fontsize=6, fon
 ax[1].set_yscale('log'); ax[1].set_ylabel('score error std (cosine)')
 ref_line(ax[1], 1e-3 / 6, r'$1.7{\times}10^{-4}$', 1.05)
 ax[1].set_xlim(right=2**14.8)
-ax[1].text(0.02, 0.97, 'markers: measured; lines: Thm. 1', transform=ax[1].transAxes, fontsize=6, color=INK2, va='top')
+ax[1].text(0.02, 0.97, 'markers: measured; lines: model', transform=ax[1].transAxes, fontsize=6, color=INK2, va='top')
 save(fig, 'fig_noise.pdf')
 
 # ---------------------------------------------------------------- F-budget (compact pipeline, Corollary 1)
@@ -167,23 +167,29 @@ print('figures ->', sorted(os.listdir(OUT)))
 
 # ---------------------------------------------------------------- F-flips (predicted vs measured decision flips)
 fp = R('p128/flip_prediction.csv')
-fig, ax = plt.subplots(figsize=(3.5, 1.9))
-for i, (g, col) in enumerate([('4x15', S1), ('8x7', S2), ('10x6', S3)]):
+LO, HI = 0.5, 200.0                                   # equal log ranges on both axes
+W_, H_, L_, B_, T_ = 3.5, 2.3, 0.50, 0.40, 0.05    # inches; square data region of side H_-B_-T_
+fig = plt.figure(figsize=(W_, H_)); S_ = H_ - B_ - T_
+ax = fig.add_axes([L_ / W_, B_ / H_, S_ / W_, S_ / H_])
+xx = np.logspace(np.log10(LO), np.log10(HI), 200)
+ax.fill_between(xx, np.clip(xx - 2 * np.sqrt(xx), LO, None), xx + 2 * np.sqrt(xx), color=GRID, lw=0, zorder=0)
+ax.plot(xx, xx, color=MUTED, lw=0.6, zorder=1)
+for i, (g, col, lab) in enumerate([('4x15', S1, r'$(2^4,15)$'), ('8x7', S2, r'$(2^8,7)$'), ('10x6', S3, r'$(2^{10},6)$')]):
     pts = [r for r in fp if r['r_gadget'] == g and int(r['t']) > 0]
-    x = [float(r['pred_flips']) for r in pts]; y = [max(float(r['meas_flips']), 0.5) for r in pts]
-    ax.plot(x, y, MK[i], color=col, mfc='white', mew=1.0, ms=4.5, label=f'ext.-prod., ({g.replace("x", ",")})', zorder=3)
-    for r, xx, yy in zip(pts, x, y):
-        if r['t'] == '1024': ax.annotate('$t{=}1024$', (xx, yy), xytext=(4, -3), textcoords='offset points', fontsize=5.5, color=INK2)
+    nz = [r for r in pts if float(r['meas_flips']) > 0]
+    ax.plot([float(r['pred_flips']) for r in nz], [float(r['meas_flips']) for r in nz], MK[i], color=col, mfc='none', mew=0.9, ms=4.2, label=lab, zorder=3)
+    z = [r for r in pts if float(r['meas_flips']) == 0]   # measured zero: drawn on the lower axis, pointing down
+    ax.plot([float(r['pred_flips']) for r in z], [LO] * len(z), 'v', color=col, mfc='none', mew=0.9, ms=4.2, clip_on=False, zorder=3)
 cpts = [r for r in fp if r['r_gadget'] in ('4x9c', '6x6c')]
-ax.plot([float(r['pred_flips']) for r in cpts], [float(r['meas_flips']) for r in cpts], '*', color=INK, ms=7, mfc='#f2c14e', mew=0.6, zorder=4, label='Alg. 1, (4,9) and (6,6)')
-xx = np.logspace(-0.5, 2.3, 50)
-ax.plot(xx, xx, color=MUTED, lw=0.8, zorder=1)
-ax.fill_between(xx, np.maximum(xx - 2 * np.sqrt(xx), 0.3), xx + 2 * np.sqrt(xx), color=GRID, alpha=0.7, lw=0, zorder=0)
-ax.text(40, 110, r'prediction $\pm 2\sqrt{\mu}$', color=INK2, fontsize=6, ha='right')
-ax.set_xscale('log'); ax.set_yscale('log'); ax.set_xlim(0.4, 180); ax.set_ylim(0.4, 180)
-ax.set_xlabel('predicted flips $\\sum_i \\Phi(-m_i/\\sigma_{\\mathrm{score}}(t))$'); ax.set_ylabel('measured flips (of $1.28{\\times}10^7$)')
-ax.legend(loc='upper left', fontsize=6)
-save(fig, 'fig_flips.pdf')
+ax.plot([float(r['pred_flips']) for r in cpts], [float(r['meas_flips']) for r in cpts], 'o', color=INK, mfc=INK, ms=3.6, lw=0, label=r'Alg. 1, $t=1024$', zorder=4)
+ax.set_xscale('log'); ax.set_yscale('log'); ax.set_xlim(LO, HI); ax.set_ylim(LO, HI)
+plain = FuncFormatter(lambda v, _: f'{v:g}')
+for a_ in (ax.xaxis, ax.yaxis):
+    a_.set_major_locator(LogLocator(base=10)); a_.set_major_formatter(plain); a_.set_minor_formatter(NullFormatter())
+ax.set_xlabel('predicted flips'); ax.set_ylabel('measured flips')
+ax.legend(loc='upper left', bbox_to_anchor=(1.02, 1.0), fontsize=6.5, handletextpad=0.3, borderaxespad=0.0, labelspacing=0.45)
+with plt.rc_context({'savefig.bbox': 'standard'}): fig.savefig(os.path.join(OUT, 'fig_flips.pdf'))
+plt.close(fig)   # fixed 3.5 x 2.3 in page
 print('fig_flips done')
 
 # ---------------------------------------------------------------- F-ablation (compact pipeline, small multiples)
@@ -223,7 +229,7 @@ for j, (eps, col) in enumerate([(1e-4, S1), (5e-4, S2)]):
 ax.axhline(3650, color=MUTED, lw=0.7, zorder=1); ax.text(23, 3650 * 1.5, '10 years, daily', fontsize=5.8, color=INK2)
 ax.set_yscale('log'); ax.set_xlim(22, 62); ax.set_ylim(0.7, 3e6)
 ax.set_xlabel(r'$\mu$s per template (one core)'); ax.set_ylabel(r'rotation budget $T_{\max}$')
-ax.legend(loc='upper left', fontsize=5.8); ax.set_title('(a) token choice (Cor. 1)', fontsize=7)
+ax.legend(loc='upper left', fontsize=5.8); ax.set_title('(a) token choice', fontsize=7)
 ax = axs[1]
 ax.fill_between(th, lo, hi, color=S1, alpha=0.15, lw=0)
 ax.plot(th, tput, '-o', color=S1, mfc='white', mew=0.9, ms=3.4)
