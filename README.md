@@ -23,19 +23,19 @@ Parameter set: `RF_PARAMS=p128` (k=1, N=2048, q=2^64, sigma=3.2*2^24; the paper'
 | `ksk_gen_seeded`, `NativeKsk::expand`, `native_ks`, `truncate_split` | Algorithm 1 (seeded mask-only key switch, gadget-aligned storage) |
 | `pk_gen`, `rerandomise` | re-randomisation (Sec. IV-C) |
 | `pad_key`, `upgrade_glwe`, `upgrade_ggsw` | in-place security upgrade (Sec. IV-D) |
-| `owner_reencrypt_fft` | owner-side baseline (Table IV) |
+| `owner_reencrypt_fft` | owner-side baseline (Table VII) |
 
 ## Reproducing the paper
 Single-core timings are sensitive to host load; run them on an idle machine.
 
 | paper item | command (from repo root, `B=code/target/release`, `export RF_PARAMS=p128`) | output |
 |---|---|---|
-| Table III (parameters, security) | `sage results/e0_security/est.sage`, `est_full.sage` (set `LATTICE_ESTIMATOR`) | `results/e0_security/*.log` |
+| Table IV (parameters, security) | `sage results/e0_security/est.sage`, `est_full.sage` (set `LATTICE_ESTIMATOR`) | `results/e0_security/*.log` |
 | Table II (1:N accuracy) | `RF_RERAND=1 RF_COMPACT=1 $B/ident B 16 2 4 9 0,1024 24 <prefix>` then `python results/analyze_e2.py <dir> <out.csv>` | `results/p128/e2_*metrics.csv` |
 | Fig. 2 (noise model) | `$B/chain_compact <logB> <l> <T> 16 16 out.csv`; `python results/noise_model_compact.py` | `results/p128/rev/chain_*.csv` |
-| Fig. 4 (decision flips) | predictions from `results/p128/flip_prediction.csv` | same |
-| Table IV (ablation) | `$B/final_bench 9 100 out.csv` (time), `$B/compact 1024 16 16 out.csv` (sizes, error) | `results/p128/final/final_bench.csv`, `results/p128/e11_compact/compact.csv` |
-| Table V (costs) | `$B/final_bench 9 100 out.csv` | `results/p128/final/final_bench.csv` |
+| Table V (decision flips) | predictions from `results/p128/flip_prediction.csv` | same |
+| Table VI (ablation) | `$B/final_bench 9 100 out.csv` (time), `$B/compact 1024 16 16 out.csv` (sizes, error) | `results/p128/final/final_bench.csv`, `results/p128/e11_compact/compact.csv` |
+| Table VII (costs) | `$B/final_bench 9 100 out.csv` | `results/p128/final/final_bench.csv` |
 | Fig. 3(a) token choice | `$B/budget_bench out.csv` | `results/p128/final/budget_bench.csv` |
 | Fig. 3(b) scaling | `RF_COMPACT=1 $B/scale B 16 2 4 9 250000 1,2,4,8,16,24,32,48 3 out.csv` | `results/p128/final/scale_final.csv` |
 | Fig. 3(c) shards | `python results/e5_shard_sim.py 150.96 4 out.csv` | `results/p128/e5_shard/shard.csv` |
